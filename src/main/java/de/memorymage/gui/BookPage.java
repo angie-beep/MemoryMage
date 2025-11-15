@@ -17,10 +17,8 @@ public class BookPage extends JPanel {
     public BookPage(MainWindow window, BookshelfManager manager) {
 
         queue = manager.currentQueue;
-
         setLayout(new BorderLayout());
 
-        // ===== WALL BACKGROUND PANEL =====
         JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -84,6 +82,32 @@ public class BookPage extends JPanel {
         JButton btnRight  = makeIconButton("/assets/right_button.png",  140, 55);
         JButton btnWrong  = makeIconButton("/assets/wrong_button.png",  140, 55);
 
+        JButton btnPages = makeIconButton("/assets/edit.png", 55, 55);
+        btnPages.addActionListener(e ->
+                new PagesEditor(manager.currentBook, manager, this, window)
+        );
+
+        JButton btnDeleteBook = makeIconButton("/assets/delete.png", 55, 55);
+        btnDeleteBook.addActionListener(e -> {
+            int result = JOptionPane.showConfirmDialog(
+                    this,
+                    "Delete this book?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (result == JOptionPane.YES_OPTION) {
+
+                manager.bookshelf.getBookshelf().remove(manager.currentBook);
+                manager.currentBook = null;
+                manager.currentPage = null;
+                manager.currentQueue = null;
+
+                window.reloadStartPage();
+            }
+        });
+
+
         btnBack.addActionListener(e -> window.showPage("start"));
         btnReveal.addActionListener(e -> answerLabel.setVisible(true));
 
@@ -97,26 +121,6 @@ public class BookPage extends JPanel {
             flashWizard("/assets/wizard_wrong.png", 1000);
             queue.fail();
             nextPage(manager);
-        });
-
-        JButton btnPages = new JButton("Edit Pages");
-        btnPages.addActionListener(e -> new PagesEditor(manager.currentBook, manager, this, window));
-
-        JButton btnDeleteBook = new JButton("Delete Book");
-        btnDeleteBook.addActionListener(e -> {
-            int result = JOptionPane.showConfirmDialog(
-                    this,
-                    "You sure u wanna delete dat book?",
-                    "Confirm",
-                    JOptionPane.YES_NO_OPTION
-            );
-            if (result == JOptionPane.YES_OPTION) {
-                manager.bookshelf.getBookshelf().remove(manager.currentBook);
-                manager.currentBook = null;
-                manager.currentPage = null;
-                manager.currentQueue = null;
-                window.showPage("start");
-            }
         });
 
         buttonBar.add(btnDeleteBook);
@@ -135,7 +139,6 @@ public class BookPage extends JPanel {
 
     private void flashWizard(String imgPath, int durationMs) {
         wizard.setIcon(scaleIcon(imgPath, 550, 550));
-
         new javax.swing.Timer(durationMs, e -> {
             wizard.setIcon(scaleIcon("/assets/wizard_default.png", 550, 550));
             ((javax.swing.Timer) e.getSource()).stop();

@@ -26,7 +26,7 @@ public class BookshelfManager {
 
         Book book2 = new Book("Math");
         book2.setColor("blue");
-        book2.addPage(new Page("9 + 10?", "2"));
+        book2.addPage(new Page("9 + 10?", "21"));
         book2.addPage(new Page("1 + 1?", "2"));
         book2.addPage(new Page("2 - 2?", "0"));
         book2.addPage(new Page("6 + 7?", "13"));

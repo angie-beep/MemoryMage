@@ -29,6 +29,13 @@ public class MainWindow {
         frame.setResizable(false);
     }
 
+    public void reloadStartPage() {
+        cards.remove(cards.getComponent(0));
+        cards.add(new StartPage(this, manager), "start");
+        showPage("start");
+    }
+
+
     public void openBookPage(){
         cards.add(new BookPage(this, manager), "book");
         showPage("book");
