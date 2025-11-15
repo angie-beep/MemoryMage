@@ -1,6 +1,7 @@
 package de.memorymage.gui;
 
 import de.memorymage.BookshelfManager;
+import de.memorymage.strategy.queue;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,9 @@ public class MainWindow {
         manager = new BookshelfManager();
         manager.initializaBookshelfmanager();
 
+
         frame = new JFrame("Memory Mage");
-        frame.setSize(800,600);
+        frame.setSize(1200,800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cards = new JPanel(new CardLayout());
@@ -25,6 +27,7 @@ public class MainWindow {
 
         frame.add(cards);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
     public void openBookPage(){

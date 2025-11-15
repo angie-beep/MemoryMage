@@ -7,6 +7,7 @@ public class Book {
     String title;
     ArrayList<Page> pages;
     int numberOfPages;
+    String color;
 
     public Book(String title) {
         this.title = title;
@@ -18,6 +19,13 @@ public class Book {
         numberOfPages++;
         pages.add(page);
         page.pageNumber = numberOfPages;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+    public String getColor() {
+        return color;
     }
 
     public void getRight(){

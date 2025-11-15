@@ -2,11 +2,14 @@ package de.memorymage.gui;
 
 import de.memorymage.BookshelfManager;
 import de.memorymage.entity.Book;
+import de.memorymage.strategy.queue;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class StartPage extends JPanel {
+    Random rand = new Random();
 
     public StartPage(MainWindow window, BookshelfManager manager) {
 
@@ -24,14 +27,18 @@ public class StartPage extends JPanel {
             }
         };
         background.setLayout(null);
-        background.setBounds(0, 0, 800, 600);
+        background.setBounds(0, 0, 1200, 800);
         add(background);
 
-        ImageIcon bookIcon = new ImageIcon(getClass().getResource("/assets/book_red.png"));
-
+        int numberOfBooks = 5;
+        int randomBookIndex;
         var books = manager.bookshelf.getBookshelf();
 
         for (int i = 0; i < books.size() ; i++) {
+
+            randomBookIndex = rand.nextInt(numberOfBooks) + 1;
+            String path = "/assets/books/book" + randomBookIndex + ".png";
+            ImageIcon bookIcon = new ImageIcon(getClass().getResource(path));
             int finalI = i;
             JButton bookButton = new JButton(bookIcon);
             bookButton.setBorderPainted(false);
@@ -43,8 +50,12 @@ public class StartPage extends JPanel {
             bookButton.addActionListener(e -> {
                 Book selected = books.get(finalI);
                 manager.currentBook = selected;
-                manager.currentPageIndex = 0;
+
+                manager.currentQueue = new queue(selected);
+                manager.currentPage = manager.currentQueue.peek();
+
                 window.openBookPage();
+
             });
 
             background.add(bookButton);

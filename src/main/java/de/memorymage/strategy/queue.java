@@ -9,7 +9,17 @@ public class queue {
 
     public queue(Book book){
         queue.addAll(book.getPages());
+    }
 
+    public Page peek(){
+        return queue.get(0);
+    }
+
+    public boolean isEmpty(){
+        if (queue.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     // yes
