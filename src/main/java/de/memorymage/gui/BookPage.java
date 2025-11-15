@@ -20,6 +20,11 @@ public class BookPage extends JPanel {
 
         setLayout(new BorderLayout());
 
+        JLabel titleLabel = new JLabel(manager.currentBook.getTitle(), SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Abstand oben/unten
+        add(titleLabel, BorderLayout.NORTH);
+
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         left.setPreferredSize(new Dimension(400, 800));
@@ -81,7 +86,12 @@ public class BookPage extends JPanel {
             queue.fail();
             nextPage(manager);
         });
+        JButton btnPages = new JButton("Pages");
+        btnPages.addActionListener(e -> {
+            new PagesEditor(manager.currentBook, manager, this, window);
+        });
 
+        buttonBar.add(btnPages);
         buttonBar.add(btnBack);
         buttonBar.add(btnReveal);
         buttonBar.add(btnRight);
@@ -103,7 +113,7 @@ public class BookPage extends JPanel {
         }).start();
     }
 
-    private void updatePage(BookshelfManager manager) {
+    public void updatePage(BookshelfManager manager) {
         Page p = manager.currentPage;
         questionLabel.setText("<html><center>" + p.getQuestion() + "</center></html>");
         answerLabel.setText("<html><center>" + p.getAnswer() + "</center></html>");

@@ -14,30 +14,28 @@ public class BookshelfManager {
 
 
     public Bookshelf initializaBookshelfmanager() {
-        Book book = new Book("Mathe");
-        book.addPage(new Page("1 + 1?", "2"));
-        book.addPage(new Page("9 + 10?", "21"));
-        book.addPage(new Page("6 * 7?", "42"));
-        book.addPage(new Page("30 + 37?", "67"));
-        book.addPage(new Page("1 + 3?", "4"));
-        book.addPage(new Page("18 + 6 ", "24"));
-        bookshelf.addBook(book);
-
-        Book book1 = new Book("bathe");
-        book1.addPage(new Page("aaaaaaaaaaaaaa?", "2"));
+        Book book1 = new Book("Zaubersprüche");
+        book1.setColor("blue");
+        book1.addPage(new Page("Was ist der Zauberspruch für Wasser?", "Aqua"));
+        book1.addPage(new Page("Was ist der Zauberspruch für Feuer?", "Ignis"));
+        book1.addPage(new Page("Was ist der Zauberspruch für Erde?", "Terra"));
+        book1.addPage(new Page("Was ist der Zauberspruch für Luft?", "Ventus"));
+        book1.addPage(new Page("Was ist der Zauberspruch für Licht?", "Lux"));
+        book1.addPage(new Page("Was ist der Zauberspruch für Schatten?", "Umbra"));
         bookshelf.addBook(book1);
 
-        Book book2 = new Book("aaaaa");
-        book2.addPage(new Page("bbbbbbbbbbb?", "2"));
+        Book book2 = new Book("Mathe");
+        book2.setColor("blue");
+        book2.addPage(new Page("1 + 1?", "2"));
+        book2.addPage(new Page("2 - 2?", "0"));
+        book2.addPage(new Page("6 + 7?", "13"));
+        book2.addPage(new Page("3 * 3?", "9"));
+        book2.addPage(new Page("21 % 7?", "0"));
+        book2.addPage(new Page("21 / 7", "3"));
         bookshelf.addBook(book2);
 
-        Book book3 = new Book("bbbb");
-        book3.addPage(new Page("cccccccc?", "2"));
-        bookshelf.addBook(book3);
 
         return bookshelf;
-
-
     }
 
 }
