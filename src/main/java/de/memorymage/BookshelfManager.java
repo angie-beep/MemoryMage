@@ -14,18 +14,19 @@ public class BookshelfManager {
 
 
     public Bookshelf initializaBookshelfmanager() {
-        Book book1 = new Book("Zaubersprüche");
+        Book book1 = new Book("Magic Spells");
         book1.setColor("blue");
-        book1.addPage(new Page("Was ist der Zauberspruch für Wasser?", "Aqua"));
-        book1.addPage(new Page("Was ist der Zauberspruch für Feuer?", "Ignis"));
-        book1.addPage(new Page("Was ist der Zauberspruch für Erde?", "Terra"));
-        book1.addPage(new Page("Was ist der Zauberspruch für Luft?", "Ventus"));
-        book1.addPage(new Page("Was ist der Zauberspruch für Licht?", "Lux"));
-        book1.addPage(new Page("Was ist der Zauberspruch für Schatten?", "Umbra"));
+        book1.addPage(new Page("whats the spell for water?", "Aqua"));
+        book1.addPage(new Page("whats the spell for fire?", "Ignis"));
+        book1.addPage(new Page("whats the spell for earth?", "Terra"));
+        book1.addPage(new Page("whats the spell for air?", "Ventus"));
+        book1.addPage(new Page("whats the spell for light?", "Lux"));
+        book1.addPage(new Page("whats the spell for shadow?", "Umbra"));
         bookshelf.addBook(book1);
 
-        Book book2 = new Book("Mathe");
+        Book book2 = new Book("Math");
         book2.setColor("blue");
+        book2.addPage(new Page("9 + 10?", "2"));
         book2.addPage(new Page("1 + 1?", "2"));
         book2.addPage(new Page("2 - 2?", "0"));
         book2.addPage(new Page("6 + 7?", "13"));

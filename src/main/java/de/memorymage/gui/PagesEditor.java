@@ -44,10 +44,8 @@ public class PagesEditor extends JFrame {
         btnAdd.addActionListener(e -> addPageDialog());
         btnDelete.addActionListener(e -> deleteSelectedPage());
 
-        // ----- SAVE & EXIT FIX -----
         btnSave.addActionListener(e -> {
 
-            // Queue neu erstellen
             manager.currentQueue = new queue(book);
 
             if (!manager.currentQueue.isEmpty()) {
@@ -56,8 +54,6 @@ public class PagesEditor extends JFrame {
 
             dispose();
 
-            // === WICHTIG ===
-            // Verhalten wie: Buch im Bücherregal erneut anklicken
             window.showPage("start");
             window.openBookPage();
         });

@@ -1,7 +1,6 @@
 package de.memorymage.gui;
 
 import de.memorymage.BookshelfManager;
-import de.memorymage.strategy.queue;
 
 import javax.swing.*;
 import java.awt.*;

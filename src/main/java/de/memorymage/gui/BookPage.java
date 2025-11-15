@@ -11,7 +11,7 @@ public class BookPage extends JPanel {
 
     private JLabel questionLabel;
     private JLabel answerLabel;
-    private JLabel wizard;   // Wizard gespeichert
+    private JLabel wizard;
     private queue queue;
 
     public BookPage(MainWindow window, BookshelfManager manager) {
@@ -20,19 +20,33 @@ public class BookPage extends JPanel {
 
         setLayout(new BorderLayout());
 
+        // ===== WALL BACKGROUND PANEL =====
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image bg = new ImageIcon(getClass().getResource("/assets/wall.jpeg")).getImage();
+                g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        backgroundPanel.setLayout(new BorderLayout());
+        add(backgroundPanel);
+
         JLabel titleLabel = new JLabel(manager.currentBook.getTitle(), SwingConstants.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 32));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Abstand oben/unten
-        add(titleLabel, BorderLayout.NORTH);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        backgroundPanel.add(titleLabel, BorderLayout.NORTH);
 
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         left.setPreferredSize(new Dimension(400, 800));
+        left.setOpaque(false);
 
-        wizard = new JLabel(scaleIcon("/assets/wizard_default.png", 350, 350));
+        wizard = new JLabel(scaleIcon("/assets/wizard_default.png", 550, 550));
         wizard.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         left.add(Box.createVerticalStrut(40));
+        left.add(Box.createHorizontalStrut(60));
         left.add(wizard);
 
         Image bookImage = new ImageIcon(getClass().getResource("/assets/open_book.png"))
@@ -46,10 +60,9 @@ public class BookPage extends JPanel {
                 g.drawImage(bookImage, 0, 0, getWidth(), 450, this);
             }
         };
-
         bookPanel.setLayout(null);
         bookPanel.setPreferredSize(new Dimension(800, 800));
-
+        bookPanel.setOpaque(false);
 
         questionLabel = new JLabel("", SwingConstants.CENTER);
         questionLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -63,16 +76,15 @@ public class BookPage extends JPanel {
         bookPanel.add(questionLabel);
         bookPanel.add(answerLabel);
 
-        JPanel buttonBar = new JPanel();
-        buttonBar.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        JPanel buttonBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        buttonBar.setOpaque(false);
 
-        JButton btnBack = new JButton("Back");
+        JButton btnBack   = makeIconButton("/assets/back_button.png",   140, 55);
+        JButton btnReveal = makeIconButton("/assets/reveal_button.png", 140, 55);
+        JButton btnRight  = makeIconButton("/assets/right_button.png",  140, 55);
+        JButton btnWrong  = makeIconButton("/assets/wrong_button.png",  140, 55);
+
         btnBack.addActionListener(e -> window.showPage("start"));
-
-        JButton btnReveal = new JButton("Reveal");
-        JButton btnRight = new JButton("Right");
-        JButton btnWrong = new JButton("Wrong");
-
         btnReveal.addActionListener(e -> answerLabel.setVisible(true));
 
         btnRight.addActionListener(e -> {
@@ -86,29 +98,46 @@ public class BookPage extends JPanel {
             queue.fail();
             nextPage(manager);
         });
-        JButton btnPages = new JButton("Pages");
-        btnPages.addActionListener(e -> {
-            new PagesEditor(manager.currentBook, manager, this, window);
+
+        JButton btnPages = new JButton("Edit Pages");
+        btnPages.addActionListener(e -> new PagesEditor(manager.currentBook, manager, this, window));
+
+        JButton btnDeleteBook = new JButton("Delete Book");
+        btnDeleteBook.addActionListener(e -> {
+            int result = JOptionPane.showConfirmDialog(
+                    this,
+                    "You sure u wanna delete dat book?",
+                    "Confirm",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (result == JOptionPane.YES_OPTION) {
+                manager.bookshelf.getBookshelf().remove(manager.currentBook);
+                manager.currentBook = null;
+                manager.currentPage = null;
+                manager.currentQueue = null;
+                window.showPage("start");
+            }
         });
 
+        buttonBar.add(btnDeleteBook);
         buttonBar.add(btnPages);
         buttonBar.add(btnBack);
         buttonBar.add(btnReveal);
         buttonBar.add(btnRight);
         buttonBar.add(btnWrong);
 
-        add(left, BorderLayout.WEST);
-        add(bookPanel, BorderLayout.CENTER);
-        add(buttonBar, BorderLayout.SOUTH);
+        backgroundPanel.add(left, BorderLayout.WEST);
+        backgroundPanel.add(bookPanel, BorderLayout.CENTER);
+        backgroundPanel.add(buttonBar, BorderLayout.SOUTH);
 
         updatePage(manager);
     }
 
     private void flashWizard(String imgPath, int durationMs) {
-        wizard.setIcon(scaleIcon(imgPath, 350, 350));
+        wizard.setIcon(scaleIcon(imgPath, 550, 550));
 
         new javax.swing.Timer(durationMs, e -> {
-            wizard.setIcon(scaleIcon("/assets/wizard_default.png", 350, 350));
+            wizard.setIcon(scaleIcon("/assets/wizard_default.png", 550, 550));
             ((javax.swing.Timer) e.getSource()).stop();
         }).start();
     }
@@ -124,8 +153,6 @@ public class BookPage extends JPanel {
         if (!queue.isEmpty()) {
             manager.currentPage = queue.peek();
             updatePage(manager);
-        } else {
-            System.out.println("FERTIG GELERNT!");
         }
     }
 
@@ -133,5 +160,18 @@ public class BookPage extends JPanel {
         Image img = new ImageIcon(getClass().getResource(path)).getImage();
         Image scaled = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
+    }
+
+    private JButton makeIconButton(String path, int w, int h) {
+        Image img = new ImageIcon(getClass().getResource(path)).getImage();
+        Image scaled = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+
+        JButton btn = new JButton(new ImageIcon(scaled));
+        btn.setBorderPainted(false);
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setOpaque(false);
+
+        return btn;
     }
 }

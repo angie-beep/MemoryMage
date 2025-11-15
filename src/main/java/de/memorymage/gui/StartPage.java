@@ -29,8 +29,8 @@ public class StartPage extends JPanel {
 
         drawBooks(manager, window, background);
 
-        JButton addBook = new JButton("+ Add Book");
-        addBook.setBounds(20, 700, 150, 40);
+        JButton addBook = createIconButton("/assets/add_button.png", 64, 64);
+        addBook.setBounds(20, 680, 64, 64);
         addBook.addActionListener(e -> openAddBookDialog(manager, window, background));
         background.add(addBook);
     }
@@ -56,7 +56,7 @@ public class StartPage extends JPanel {
             button.setBorderPainted(false);
             button.setContentAreaFilled(false);
             button.setFocusPainted(false);
-            button.setBounds(50 + i * 120, 200, 100, 250);
+            button.setBounds(10 + i * 120, 70, 150, 250);
 
             int finalI = i;
 
@@ -71,11 +71,6 @@ public class StartPage extends JPanel {
 
             background.add(button);
         }
-
-        JButton addBook = new JButton("+ Add Book");
-        addBook.setBounds(20, 700, 150, 40);
-        addBook.addActionListener(e -> openAddBookDialog(manager, window, background));
-        background.add(addBook);
 
         background.revalidate();
         background.repaint();
@@ -107,17 +102,28 @@ public class StartPage extends JPanel {
                 return;
             }
 
-            // Neues Buch erstellen
             Book newBook = new Book(title);
             newBook.setColor(color);
-            Page startPage = new Page("here your Question ^^", "here your Answer ^^");
+            Page startPage = new Page("here your Question ^^", "here your Answer :3 ");
             newBook.addPage(startPage);
 
-            // WICHTIG → ins Regal schreiben
             manager.bookshelf.addBook(newBook);
 
-            // Regal neu laden
             drawBooks(manager, window, background);
         }
+
+    }
+
+    private JButton createIconButton(String path, int w, int h) {
+        Image img = new ImageIcon(getClass().getResource(path)).getImage();
+        Image scaled = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        JButton btn = new JButton(new ImageIcon(scaled));
+
+        btn.setBorderPainted(false);
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setOpaque(false);
+
+        return btn;
     }
 }
